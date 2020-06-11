@@ -5,7 +5,7 @@ data "local_file" "cluster_bootstrap_state" {
 data "template_file" "master_userdata_script" {
   template = "${file("${path.module}/../templates/user_data.sh")}"
 
-  vars {
+  vars  = {
     cloud_provider          = "aws"
     elasticsearch_data_dir  = "/var/lib/elasticsearch"
     elasticsearch_logs_dir  = "${var.elasticsearch_logs_dir}"
@@ -30,7 +30,7 @@ data "template_file" "master_userdata_script" {
 data "template_file" "bootstrap_userdata_script" {
   template = "${file("${path.module}/../templates/user_data.sh")}"
 
-  vars {
+  vars  = {
     cloud_provider          = "aws"
     elasticsearch_data_dir  = "/var/lib/elasticsearch"
     elasticsearch_logs_dir  = "${var.elasticsearch_logs_dir}"
@@ -68,7 +68,7 @@ resource "aws_launch_configuration" "master" {
     device_name = "/dev/xvdh"
     volume_size = "10" # GB
   }
-  
+
   lifecycle {
     create_before_destroy = true
   }

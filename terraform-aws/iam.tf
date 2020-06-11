@@ -1,7 +1,7 @@
 data "template_file" "data_s3_backup" {
   template = "${file("${path.module}/../templates/s3-backup.json")}"
 
-  vars {
+  vars  = {
     s3_backup_bucket = "${var.s3_backup_bucket}"
   }
 }

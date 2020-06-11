@@ -1,32 +1,32 @@
 variable "azure_location" {
-  type = "string"
+  type    = string
   default = "East US"
 }
 
 variable "azure_client_id" {
-  type = "string"
+  type    = string
 }
 
 variable "azure_client_secret" {
-  type = "string"
+  type    = string
 }
 
 variable "azure_subscription_id" {
-  type = "string"
+  type    = string
 }
 
 variable "azure_tenant_id" {
-  type = "string"
+  type    = string
 }
 
 variable "es_cluster" {
   description = "Name of the elasticsearch cluster, used in node discovery"
-  default = "my-cluster"
+  default     = "my-cluster"
 }
 
 variable "key_path" {
   description = "Key name to be used with the launched EC2 instances."
-  default = "~/.ssh/id_rsa.pub"
+  default     = "~/.ssh/dev-droplet"
 }
 
 variable "environment" {
@@ -34,22 +34,22 @@ variable "environment" {
 }
 
 variable "data_instance_type" {
-  type = "string"
+  type    = string
   default = "Standard_D12_v2"
 }
 
 variable "master_instance_type" {
-  type = "string"
+  type    = string
   default = "Standard_A2_v2"
 }
 
 variable "client_instance_type" {
-  type = "string"
+  type    = string
   default = "Standard_A2_v2"
 }
 
 variable "elasticsearch_volume_size" {
-  type = "string"
+  type    = string
   default = "100" # gb
 }
 
@@ -71,12 +71,12 @@ variable "elasticsearch_logs_dir" {
 
 # default elasticsearch heap size
 variable "data_heap_size" {
-  type = "string"
+  type    = string
   default = "7g"
 }
 
 variable "master_heap_size" {
-  type = "string"
+  type    = string
   default = "2g"
 }
 
@@ -111,3 +111,4 @@ variable "xpack_monitoring_host" {
   description = "ES host to send monitoring data"
   default     = "self"
 }
+

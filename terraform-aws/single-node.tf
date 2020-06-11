@@ -1,7 +1,7 @@
 data "template_file" "single_node_userdata_script" {
   template = "${file("${path.module}/../templates/user_data.sh")}"
 
-  vars {
+  vars  = {
     cloud_provider          = "aws"
     elasticsearch_data_dir  = "${var.elasticsearch_data_dir}"
     elasticsearch_logs_dir  = "${var.elasticsearch_logs_dir}"
@@ -61,7 +61,7 @@ resource "aws_autoscaling_group" "single_node" {
   launch_configuration = "${aws_launch_configuration.single_node.id}"
 
   vpc_zone_identifier = ["${data.aws_subnet_ids.selected.ids}"]
-  
+
   tag {
     key = "Name"
     value = "${format("%s-elasticsearch", var.es_cluster)}"
