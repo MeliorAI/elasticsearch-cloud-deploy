@@ -26,7 +26,7 @@ variable "es_cluster" {
 
 variable "key_path" {
   description = "Key name to be used with the launched EC2 instances."
-  default     = "~/.ssh/dev-droplet"
+  default     = "~/.ssh/id_rsa.pub"
 }
 
 variable "environment" {
@@ -81,15 +81,15 @@ variable "master_heap_size" {
 }
 
 variable "masters_count" {
-  default = "1"
+  default = 1
 }
 
 variable "datas_count" {
-  default = "1"
+  default = 1
 }
 
 variable "clients_count" {
-  default = "1"
+  default = 1
 }
 
 # whether or not to enable x-pack security on the cluster

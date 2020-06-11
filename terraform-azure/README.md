@@ -56,8 +56,17 @@ State path: terraform.tfstate
 
 Outputs:
 
-public_dns = elasticsearch-cluster-foo.eastus.cloudapp.azure.com
-vm_password = rBTKoLsf7x8ODZVd
+clients_public_dns = [
+  "elasticsearch-cluster-foo.eastus.cloudapp.azure.com",
+]
+clients_public_ip_address = [
+  "<some-IP>",
+]
+es_image_id = elasticsearch7-2020-06-10T072821
+kibana_image_id = kibana7-2020-06-11T122158
+public_dns = []
+public_ip_address = []
+vm_password = <some-password>
 ```
 
 Note `clients_lb_public_ipaddress` and `vm-password` - that's your entry point to the cluster and the password for the `exampleuser` default user.

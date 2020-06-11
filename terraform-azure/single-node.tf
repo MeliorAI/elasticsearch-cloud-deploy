@@ -11,7 +11,7 @@ data "template_file" "singlenode_userdata_script" {
     es_environment         = "${var.environment}-${var.es_cluster}"
     security_groups        = ""
     availability_zones     = ""
-    minimum_master_nodes   = format("%d", var.masters_count / 2 + 1)
+    minimum_master_nodes   = var.masters_count / 2 + 1
     master                 = "true"
     data                   = "true"
     bootstrap_node         = "false"
