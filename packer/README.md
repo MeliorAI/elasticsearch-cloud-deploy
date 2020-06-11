@@ -49,22 +49,26 @@ Response will look something like this:
 }
 ```
 
-Follow up by execting the following
+Follow up by executing the following
 
 ```bash
 aws iam create-instance-profile --instance-profile-name packer
 aws iam add-role-to-instance-profile  --instance-profile-name packer --role-name packer
-
 ```
 
-By default, AWS builder will pick a subnet from the default VPC for running the builder instance. It is required for that subnet to have Public IPs auto-assignment enabled. Otherwise, packer won't be able to make a SSH connection to the instance and will hang on `Waiting for SSH to become available...`  
+By default, AWS builder will pick a subnet from the default VPC for running the builder instance. It is required for that subnet to have Public IPs auto-assignment enabled. Otherwise, packer won't be able to make a SSH connection to the instance and will hang on `Waiting for SSH to become available...`
 If you don't want to enable public IPs auto-assignment on your default VPC subnets, you can explicitly set the subnet by setting `vpc_id` and `subnet_id` keys in *.packer.json files `amazon-ebs` builder definitions.
 
-## On Microsoft Azure
+## [On Microsoft Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/build-image-with-packer)
 
 Before running Packer for the first time you will need to do a one-time initial setup.
 
-Use PowerShell, and login to AzureRm. See here for more details: https://docs.microsoft.com/en-us/powershell/azure/authenticate-azureps. Once logged in, take note of the subscription and tenant IDs which will be printed out. Alternatively, you can retrieve them by running `Get-AzureRmSubscription` once logged-in.
+### Power-Shell
+
+Use Power-Shell, and [login to AzureRm](https://docs.microsoft.com/en-us/powershell/azure/authenticate-azureps). 
+
+Once logged in, take note of the subscription and tenant IDs which will be printed out.
+Alternatively, you can retrieve them by running `Get-AzureRmSubscription` once logged-in.
 
 ```Powershell
 $rgName = "packer-elasticsearch-images"
@@ -73,16 +77,45 @@ New-AzureRmResourceGroup -Name $rgName -Location $location
 
 $sp = New-AzureRmADServicePrincipal -DisplayName "AzurePackerIKF"
 $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
+
+# If this displays just one character
 $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+$PlainPassword
+
+# Try
+$PlainPassword = ConvertFrom-SecureString -SecureString $newCredential.Secret -AsPlainText
 $PlainPassword
 
 New-AzureRmRoleAssignment -RoleDefinitionName Contributor -ServicePrincipalName $sp.ApplicationId
 $sp.ApplicationId
 ```
 
-Note the resource group name, location, password, sp.ApplicationId as used in the script and emitted as output and update `variables.json`.
+> **NOTE**: The above seems to not return a proper password
 
-To learn more about using Packer on Azure see https://docs.microsoft.com/en-us/azure/virtual-machines/windows/build-image-with-packer
+If that's the case might be needed to  of the _Service Principal_.
+
+Note the `resource group name`,`location`, `password` and `sp.ApplicationId` as used in the script and emitted as output and update `variables.json`.
+
+> **To learn more:** [Packer on Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/build-image-with-packer)
+
+
+
+#### Useful Power-Shell commands:
+
+* Retrieve Azure Active Directory Service Principal by name
+```Powershell
+Get-AzADServicePrincipal -DisplayName AzurePackerIKF
+```
+
+* [Reset the credentials](https://docs.microsoft.com/en-us/powershell/azure/create-azure-service-principal-azureps?view=azps-4.2.0) (creates a new **random** password)
+```PowerShell
+$newCredential = New-AzADSpCredential -ServicePrincipalName http://AzurePackerIKF
+$plainPassword = ConvertFrom-SecureString -SecureString $newCredential.Secret -AsPlainText
+$plainPassword
+```
+> **NOTE**: The `ServicePrincipalName` is to be taken from the `Get-AzADServicePrincipal` command
+
+### Azure CLI
 
 Similarly, using the Azure CLI is going to look something like below:
 
@@ -105,4 +138,4 @@ packer build -only=amazon-ebs -var-file=variables.json elasticsearch7-node.packe
 packer build -only=amazon-ebs -var-file=variables.json kibana7-node.packer.json
 ```
 
-Replace the `-only` parameter to `azure-arm` to build images for Azure instead of AWS.
+> Replace the `-only` parameter to `azure-arm` to build images for Azure instead of AWS.

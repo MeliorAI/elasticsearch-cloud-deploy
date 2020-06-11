@@ -43,14 +43,16 @@
       "managed_image_name": "kibana7-{{isotime \"2006-01-02T030405\"}}",
 
       "os_type": "Linux",
-      "custom_managed_image_name": "{{user `azure_elasticsearch_image_name`}}",
-      "custom_managed_image_resource_group_name":"{{user `azure_resource_group_name`}}",
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "18.04-LTS",
 
       "location": "{{user `azure_location`}}",
       "vm_size": "Standard_DS2_v2"
     },
     {
       "type": "googlecompute",
+
       "account_file": "{{user `gcp_account_file`}}",
       "project_id": "{{user `gcp_project_id`}}",
       "source_image_family": "elasticsearch-7",
