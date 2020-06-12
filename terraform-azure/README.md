@@ -1,5 +1,28 @@
 # Azure deployment
 
+<!--ts-->
+   * [Azure deployment](#azure-deployment)
+      * [Requierements](#requierements)
+      * [Create the machine images with Packer](#create-the-machine-images-with-packer)
+      * [Create key-pair or use your own](#create-key-pair-or-use-your-own)
+      * [Configurations](#configurations)
+         * [Cluster topology](#cluster-topology)
+      * [Launch the cluster with Terraform](#launch-the-cluster-with-terraform)
+         * [Look around](#look-around)
+      * [Backups](#backups)
+         * [Auto- and manual- scale out](#auto--and-manual--scale-out)
+      * [Elastic Discovery on Azure](#elastic-discovery-on-azure)
+
+<!-- Added by: jose, at: Sat 13 Jun 00:02:42 CEST 2020 -->
+
+<!--te-->
+
+
+## Requierements
+
+- packer
+- `terraform 1.10`
+
 ## Create the machine images with Packer
 
 Go to the packer folder and see the README there. Once you have the machine image IDs, return here and continue with the next steps.

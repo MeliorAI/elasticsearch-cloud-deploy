@@ -1,5 +1,15 @@
 # Deploy Elasticsearch on the cloud easily
 
+<!--ts-->
+   * [Deploy Elasticsearch on the cloud easily](#deploy-elasticsearch-on-the-cloud-easily)
+      * [Usage](#usage)
+      * [tfstate](#tfstate)
+
+<!-- Added by: jose, at: Sat 13 Jun 00:02:53 CEST 2020 -->
+
+<!--te-->
+
+
 This repository contains a set of tools and scripts to deploy an Elasticsearch cluster on the cloud, using best-practices and state of the art tooling.
 
 ***Note:*** This branch supports Elasticsearch 7.x only. For other Elasticsearch versions see [elasticsearch-5.x](https://github.com/BigDataBoutique/elasticsearch-cloud-deploy/tree/elasticsearch-5.x) and [elasticsearch-6.x](https://github.com/BigDataBoutique/elasticsearch-cloud-deploy/tree/elasticsearch-6.x) branches.
@@ -20,10 +30,10 @@ Features:
 
 Clone this repo to work locally. You might want to fork it in case you need to apply some additional configurations or commit changes to the variables file.
 
-Create images with Packer (see `packer` folder in this repo), and then go into the terraform folder and run `terraform plan`. See README files in each respective folder. 
+Create images with Packer (see `packer` folder in this repo), and then go into the terraform folder and run `terraform plan`. See README files in each respective folder.
 
 ## tfstate
 
 Once you run `terraform apply` on any of the terraform folders in this repo, a file `terraform.tfstate` will be created. This file contains the mapping between your cloud elements to the terraform configuration. Make sure to keep this file safe.
-  
+
 See [this guide](https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa#.fbb2nalw6) for a discussion on tfstate management and locking between team members.

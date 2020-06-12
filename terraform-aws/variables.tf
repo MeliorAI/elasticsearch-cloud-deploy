@@ -13,13 +13,13 @@ variable "vpc_id" {
 }
 
 variable "clients_subnet_ids" {
-  description = "Subnets to run client nodes and client ELB in. Only one subnet per availability zone allowed. Will detect a single subnet by default." 
+  description = "Subnets to run client nodes and client ELB in. Only one subnet per availability zone allowed. Will detect a single subnet by default."
   type = "list"
   default = []
 }
 
 variable "cluster_subnet_ids" {
-  description = "Cluster nodes subnets. Defaults to all VPC subnets." 
+  description = "Cluster nodes subnets. Defaults to all VPC subnets."
   type = "list"
   default = []
 }
@@ -83,25 +83,25 @@ variable "client_heap_size" {
 }
 
 variable "masters_count" {
-  default = "0"
+  default = 0
 }
 
 variable "datas_count" {
-  default = "0"
+  default = 0
 }
 
 variable "clients_count" {
-  default = "0"
+  default = 0
 }
 
 variable "security_enabled" {
   description = "Whether or not to enable x-pack security on the cluster"
-  default = "false"
+  default = false
 }
 
 variable "monitoring_enabled" {
   description = "Whether or not to enable x-pack monitoring on the cluster"
-  default = "true"
+  default = true
 }
 
 # client nodes have nginx installed on them, these credentials are used for basic auth
@@ -112,7 +112,7 @@ variable "client_user" {
 variable "public_facing" {
   description = "Whether or not the created cluster should be accessible from the public internet"
   type = "string"
-  default = "true"
+  default = true
 }
 
 # the ability to add additional existing security groups. In our case
@@ -124,7 +124,7 @@ variable "additional_security_groups" {
 
 variable "ebs_optimized" {
   description = "Whether data instances are EBS optimized or not"
-  default = "true"
+  default = true
 }
 
 variable "lb_port" {

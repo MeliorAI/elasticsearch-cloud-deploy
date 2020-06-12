@@ -10,9 +10,9 @@ data "template_file" "client_userdata_script" {
     es_environment          = "${var.environment}-${var.es_cluster}"
     security_groups         = "${aws_security_group.elasticsearch_security_group.id}"
     availability_zones      = "${join(",", coalescelist(var.availability_zones, data.aws_availability_zones.available.names))}"
-    master                  = "false"
-    data                    = "false"
-    bootstrap_node          = "false"
+    master                  = false
+    data                    = false
+    bootstrap_node          = false
     aws_region              = "${var.aws_region}"
     security_enabled        = "${var.security_enabled}"
     monitoring_enabled      = "${var.monitoring_enabled}"
@@ -25,7 +25,7 @@ data "template_file" "client_userdata_script" {
 
 resource "aws_launch_configuration" "client" {
   // Only create if it's not a single-node configuration
-  count = "${var.masters_count == "0" && var.datas_count == "0" ? "0" : "1"}"
+  count = "${var.masters_count == 0 && var.datas_count == 0 ? 0 : 1}"
 
   name_prefix = "elasticsearch-${var.es_cluster}-client-nodes"
   image_id = "${data.aws_ami.kibana_client.id}"
@@ -43,7 +43,7 @@ resource "aws_launch_configuration" "client" {
 
 resource "aws_autoscaling_group" "client_nodes" {
   // Only create if it's not a single-node configuration
-  count = "${var.masters_count == "0" && var.datas_count == "0" ? "0" : "1"}"
+  count = "${var.masters_count == 0 && var.datas_count == 0 ? 0 : 1}"
 
   name = "elasticsearch-${var.es_cluster}-client-nodes"
   max_size = "${var.clients_count}"

@@ -54,11 +54,13 @@ variable "elasticsearch_volume_size" {
 }
 
 variable "use_instance_storage" {
-  default = "true"
+  default = true
+  type    = bool
 }
 
 variable "associate_public_ip" {
-  default = "true"
+  default = true
+  type    = bool
 }
 
 variable "elasticsearch_data_dir" {
@@ -82,24 +84,27 @@ variable "master_heap_size" {
 
 variable "masters_count" {
   default = 3
+  type    = number
 }
 
 variable "datas_count" {
   default = 2
+  type    = number
 }
 
 variable "clients_count" {
   default = 1
+  type    = number
 }
 
 # whether or not to enable x-pack security on the cluster
 variable "security_enabled" {
-  default = "false"
+  default = false
 }
 
 # whether or not to enable x-pack monitoring on the cluster
 variable "monitoring_enabled" {
-  default = "true"
+  default = true
 }
 
 # client nodes have nginx installed on them, these credentials are used for basic auth

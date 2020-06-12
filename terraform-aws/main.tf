@@ -99,12 +99,12 @@ resource "aws_security_group" "elasticsearch_clients_security_group" {
 
 resource "aws_elb" "es_client_lb" {
   // Only create an ELB if it's not a single-node configuration
-  count = "${var.masters_count == "0" && var.datas_count == "0" ? "0" : "1"}"
+  count = "${var.masters_count == 0 && var.datas_count == 0 ? 0 : 1}"
 
   name            = "${format("%s-client-lb", var.es_cluster)}"
   security_groups = ["${aws_security_group.elasticsearch_clients_security_group.id}"]
   subnets         = ["${coalescelist(var.clients_subnet_ids, list(data.aws_subnet_ids.selected.ids[0]))}"]
-  internal        = "${var.public_facing == "true" ? "false" : "true"}"
+  internal        = "${var.public_facing == true ? false : true}"
 
   cross_zone_load_balancing   = true
   idle_timeout                = 400

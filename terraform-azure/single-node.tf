@@ -12,10 +12,10 @@ data "template_file" "singlenode_userdata_script" {
     security_groups        = ""
     availability_zones     = ""
     minimum_master_nodes   = var.masters_count / 2 + 1
-    master                 = "true"
-    data                   = "true"
-    bootstrap_node         = "false"
-    http_enabled           = "true"
+    master                 = true
+    data                   = true
+    bootstrap_node         = false
+    http_enabled           = true
     masters_count          = var.masters_count
     security_enabled       = var.security_enabled
     monitoring_enabled     = var.monitoring_enabled
@@ -29,7 +29,7 @@ data "template_file" "singlenode_userdata_script" {
 }
 
 resource "azurerm_public_ip" "single-node" {
-  count               = var.masters_count == "0" && var.datas_count == "0" ? "1" : "0"
+  count               = var.masters_count == 0 && var.datas_count == 0 ? 1 : 0
   name                = "es-${var.es_cluster}-single-node-public-ip"
   location            = var.azure_location
   resource_group_name = azurerm_resource_group.elasticsearch.name
@@ -41,7 +41,7 @@ resource "azurerm_public_ip" "single-node" {
 
 resource "azurerm_network_interface" "single-node" {
   // Only create if it's a single-node configuration
-  count = var.masters_count == "0" && var.datas_count == "0" ? "1" : "0"
+  count = var.masters_count == 0 && var.datas_count == 0 ? 1 : 0
 
   name                = "es-${var.es_cluster}-singlenode-nic"
   location            = var.azure_location
@@ -57,7 +57,7 @@ resource "azurerm_network_interface" "single-node" {
 
 resource "azurerm_virtual_machine" "single-node" {
   // Only create if it's a single-node configuration
-  count = var.masters_count == "0" && var.datas_count == "0" ? "1" : "0"
+  count = var.masters_count == 0 && var.datas_count == 0 ? 1 : 0
 
   name                  = "es-${var.es_cluster}-singlenode"
   location              = var.azure_location

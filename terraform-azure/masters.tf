@@ -15,10 +15,10 @@ data "template_file" "master_userdata_script" {
     es_environment         = "${var.environment}-${var.es_cluster}"
     security_groups        = ""
     availability_zones     = ""
-    master                 = "true"
-    data                   = "false"
-    bootstrap_node         = "false"
-    http_enabled           = "false"
+    master                 = true
+    data                   = false
+    bootstrap_node         = false
+    http_enabled           = false
     masters_count          = var.masters_count
     security_enabled       = var.security_enabled
     monitoring_enabled     = var.monitoring_enabled
@@ -44,9 +44,9 @@ data "template_file" "bootstrap_userdata_script" {
     es_environment         = "${var.environment}-${var.es_cluster}"
     security_groups        = ""
     availability_zones     = ""
-    master                 = "true"
-    data                   = "false"
-    bootstrap_node         = "true"
+    master                 = true
+    data                   = false
+    bootstrap_node         = true
     azure_resource_group   = azurerm_resource_group.elasticsearch.name
     azure_master_vmss_name = azurerm_virtual_machine_scale_set.master-nodes[0].name
     masters_count          = var.masters_count
@@ -72,7 +72,7 @@ resource "azurerm_role_assignment" "bootstrap-node-role-assignment" {
 }
 
 resource "azurerm_virtual_machine_scale_set" "master-nodes" {
-  count = var.masters_count == "0" ? "0" : "1"
+  count = var.masters_count == 0 ? 0 : 1
 
   name                = "es-${var.es_cluster}-master-nodes"
   resource_group_name = azurerm_resource_group.elasticsearch.name
@@ -157,7 +157,7 @@ resource "azurerm_network_interface" "bootstrap-node-nc" {
 
 resource "azurerm_virtual_machine" "bootstrap_node" {
   // Only create if cluster was not bootstrapped before, and not in single-node mode
-  count = var.masters_count == "0" && var.datas_count == "0" || data.local_file.cluster_bootstrap_state.content == "1" ? "0" : "1"
+  count = var.masters_count == 0 && var.datas_count == 0 || data.local_file.cluster_bootstrap_state.content == 1 ? 0 : 1
 
   name                = "es-${var.es_cluster}-bootstrap-node"
   resource_group_name = azurerm_resource_group.elasticsearch.name

@@ -14,9 +14,9 @@ data "template_file" "master_userdata_script" {
     es_environment          = "${var.environment}-${var.es_cluster}"
     security_groups         = "${aws_security_group.elasticsearch_security_group.id}"
     availability_zones      = "${join(",", coalescelist(var.availability_zones, data.aws_availability_zones.available.names))}"
-    master                  = "true"
-    data                    = "false"
-    bootstrap_node          = "false"
+    master                  = true
+    data                    = false
+    bootstrap_node          = false
     aws_region              = "${var.aws_region}"
     security_enabled        = "${var.security_enabled}"
     monitoring_enabled      = "${var.monitoring_enabled}"
@@ -40,9 +40,9 @@ data "template_file" "bootstrap_userdata_script" {
     security_groups         = "${aws_security_group.elasticsearch_security_group.id}"
     asg_name                = "${aws_autoscaling_group.master_nodes.name}"
     availability_zones      = "${join(",", coalescelist(var.availability_zones, data.aws_availability_zones.available.names))}"
-    master                  = "true"
-    data                    = "false"
-    bootstrap_node          = "true"
+    master                  = true
+    data                    = false
+    bootstrap_node          = true
     aws_region              = "${var.aws_region}"
     security_enabled        = "${var.security_enabled}"
     monitoring_enabled      = "${var.monitoring_enabled}"
@@ -116,7 +116,7 @@ resource "aws_autoscaling_group" "master_nodes" {
 
 resource "aws_instance" "bootstrap_node" {
   // Only create if cluster was not bootstrapped before, and not in single-node mode
-  count = "${(var.masters_count == "0" && var.datas_count == "0") || data.local_file.cluster_bootstrap_state.content == "1" ? "0" : "1"}"
+  count = "${(var.masters_count == 0 && var.datas_count == 0) || data.local_file.cluster_bootstrap_state.content == 1 ? 0 : 1}"
 
   ami   = "${data.aws_ami.elasticsearch.id}"
   instance_type = "${var.master_instance_type}"

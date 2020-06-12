@@ -11,10 +11,10 @@ data "template_file" "data_userdata_script" {
     es_environment         = "${var.environment}-${var.es_cluster}"
     security_groups        = ""
     availability_zones     = ""
-    master                 = "false"
-    data                   = "true"
-    bootstrap_node         = "false"
-    http_enabled           = "true"
+    master                 = false
+    data                   = true
+    bootstrap_node         = false
+    http_enabled           = true
     masters_count          = var.masters_count
     security_enabled       = var.security_enabled
     monitoring_enabled     = var.monitoring_enabled
@@ -28,7 +28,7 @@ data "template_file" "data_userdata_script" {
 }
 
 resource "azurerm_virtual_machine_scale_set" "data-nodes" {
-  count = var.datas_count == "0" ? "0" : "1"
+  count = var.datas_count == 0 ? 0 : 1
 
   name                = "es-${var.es_cluster}-data-nodes"
   resource_group_name = azurerm_resource_group.elasticsearch.name

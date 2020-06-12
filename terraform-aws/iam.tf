@@ -22,7 +22,7 @@ resource "aws_iam_role_policy" "elasticsearch" {
 }
 
 resource "aws_iam_role_policy" "asg_discover" {
-  count    = "${var.masters_count != "0" ? 1 : 0}"
+  count    = "${var.masters_count != 0 ? 1 : 0}"
   name     = "${var.es_cluster}-elasticsearch-asg-discover-policy"
   policy   = "${data.template_file.data_asg_describe.rendered}"
   role     = "${aws_iam_role.elasticsearch.id}"
