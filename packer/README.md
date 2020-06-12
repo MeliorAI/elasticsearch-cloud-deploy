@@ -82,11 +82,13 @@ $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
 $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 $PlainPassword
 
-# Try
+# Then try:
 $PlainPassword = ConvertFrom-SecureString -SecureString $newCredential.Secret -AsPlainText
 $PlainPassword
 
+# Role 'Contributor' seems not to be sufficient?
 New-AzureRmRoleAssignment -RoleDefinitionName Contributor -ServicePrincipalName $sp.ApplicationId
+
 $sp.ApplicationId
 ```
 

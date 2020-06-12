@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -eu
-
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
 function fetch_master_nodes_ips() {
@@ -37,12 +35,12 @@ if [ "${bootstrap_node}" == "true"  ]; then
             echo "Masters count is correct... Rechecking in 60 sec"
             sleep 60
             MASTER_INSTANCES_RECHECK="$(fetch_master_nodes_ips)"
-
+        
             if [ "$MASTER_INSTANCES" = "$MASTER_INSTANCES_RECHECK" ]; then
                 break
             fi
         fi
-
+    
         sleep 5
     done
 
@@ -55,6 +53,7 @@ fi
 # Configure elasticsearch
 cat <<'EOF' >>/etc/elasticsearch/elasticsearch.yml
 cluster.name: ${es_cluster}
+
 # only data nodes should have ingest and http capabilities
 node.master: ${master}
 node.data: ${data}
@@ -84,6 +83,7 @@ fi
 
 if [ "${cloud_provider}" == "aws" ]; then
 cat <<'EOF' >>/etc/elasticsearch/elasticsearch.yml
+
 network.host: _ec2:privateIpv4_,localhost
 plugin.mandatory: discovery-ec2
 cloud.node.auto_attributes: true
@@ -95,6 +95,7 @@ discovery:
     ec2.tag.Cluster: ${es_environment}
     ec2.availability_zones: ${availability_zones}
     ec2.protocol: http # no need in HTTPS for internal AWS calls
+
     # manually set the endpoint because of auto-discovery issues
     # https://github.com/elastic/elasticsearch/issues/27464
     ec2.endpoint: ec2.${aws_region}.amazonaws.com
@@ -105,11 +106,12 @@ if [ "${cloud_provider}" == "azure" ]; then
     echo 'network.host: _site_,localhost' >>/etc/elasticsearch/elasticsearch.yml
 
     if [ "${bootstrap_node}" != "true"  ]; then
-        echo 'discovery.seed_hosts: ["${es_cluster}-master000000", "${es_cluster}-master000001", "${es_cluster}-master000002", "${es_cluster}-data000000"]' >>/etc/elasticsearch/elasticsearch.yml
+        echo 'discovery.seed_hosts: ["${es_cluster}-master000000", "${es_cluster}-master000001", "${es_cluster}-data000000"]' >>/etc/elasticsearch/elasticsearch.yml
     fi
 fi
 
 cat <<'EOF' >>/etc/security/limits.conf
+
 # allow user 'elasticsearch' mlockall
 elasticsearch soft memlock unlimited
 elasticsearch hard memlock unlimited
@@ -139,7 +141,7 @@ sudo chown -R elasticsearch:elasticsearch ${elasticsearch_logs_dir}
 # we are assuming volume is declared and attached when data_dir is passed to the script
 if { [ "${master}" == "true" ] || [ "${data}" == "true" ]; } && [ "${bootstrap_node}" != "true" ]; then
     sudo mkdir -p ${elasticsearch_data_dir}
-
+    
     export DEVICE_NAME=$(lsblk -ip | tail -n +2 | grep -v " rom" | awk '{print $1 " " ($7? "MOUNTEDPART" : "") }' | sed ':a;N;$!ba;s/\n`/ /g' | sed ':a;N;$!ba;s/\n|-/ /g' | grep -v MOUNTEDPART)
     if sudo mount -o defaults -t ext4 $DEVICE_NAME ${elasticsearch_data_dir}; then
         echo 'Successfully mounted existing disk'

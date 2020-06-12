@@ -81,11 +81,11 @@ variable "master_heap_size" {
 }
 
 variable "masters_count" {
-  default = 1
+  default = 3
 }
 
 variable "datas_count" {
-  default = 1
+  default = 2
 }
 
 variable "clients_count" {

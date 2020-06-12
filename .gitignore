@@ -1,10 +1,13 @@
+.idea/
+
+.terraform/
 terraform.tfstate
 terraform.tfvars
-.idea/
-*.pem
-*.backup
-.terraform/
-.gcp*
 terraform-aws/cluster_bootstrap_state
 
+*.pem
+*.backup
+.gcp*
+
 .env
+AzureInfo.md
