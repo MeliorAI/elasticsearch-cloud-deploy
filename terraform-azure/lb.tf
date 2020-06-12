@@ -24,7 +24,7 @@ resource "azurerm_lb" "clients" {
 }
 
 resource "azurerm_lb" "clients-public" {
-  count = 1 // 1 //var.associate_public_ip == true && var.clients_count != 0 ? 1 : 0
+  count = var.associate_public_ip == true && var.clients_count != 0 ? 1 : 0
 
   location            = var.azure_location
   name                = "es-${var.es_cluster}-clients-public-lb"

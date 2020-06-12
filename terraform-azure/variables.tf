@@ -83,12 +83,12 @@ variable "master_heap_size" {
 }
 
 variable "masters_count" {
-  default = 3
+  default = 1
   type    = number
 }
 
 variable "datas_count" {
-  default = 2
+  default = 1
   type    = number
 }
 
@@ -104,7 +104,7 @@ variable "security_enabled" {
 
 # whether or not to enable x-pack monitoring on the cluster
 variable "monitoring_enabled" {
-  default = true
+  default = false
 }
 
 # client nodes have nginx installed on them, these credentials are used for basic auth

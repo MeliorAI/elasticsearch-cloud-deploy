@@ -10,8 +10,8 @@
 
   "azure_client_id": "",
   "azure_client_secret": "",
-  "azure_subscription_id": "2288e582-a2fd-4fe8-8cd2-817dcb834bbf",
-  "azure_tenant_id": "cd1d2285-2277-4d1d-9a2c-1aa2f99566db",
+  "azure_subscription_id": "",
+  "azure_tenant_id": "",
 
   "gcp_zone": "us-central1-a",
   "gcp_project_id": "elasticsearch",
