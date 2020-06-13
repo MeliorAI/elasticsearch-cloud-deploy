@@ -12,7 +12,7 @@ data "azurerm_subscription" "primary" {
 resource "random_string" "vm-login-password" {
   length           = 16
   special          = true
-  override_special = "!@#%&-_"
+  override_special = "!#%&-_"
 }
 
 resource "azurerm_resource_group" "elasticsearch" {
