@@ -129,7 +129,7 @@ variable "ebs_optimized" {
 
 variable "xpack_monitoring_host" {
   description = "ES host to send monitoring data"
-  default     = "self"
+  default     = "http://localhost:9200/"
 }
 
 variable "filebeat_monitoring_host" {
@@ -155,6 +155,11 @@ variable "singlenode_az" {
 variable "bootstrap_node_subnet_id" {
   description = "Use to override which subnet the bootstrap node is created in."
   default     = ""
+}
+
+variable "use_g1gc" {
+  description = "Whether or not to enable G1GC in jvm.options ES config"
+  default     = false
 }
 
 variable "DEV_MODE_scripts_s3_bucket" {

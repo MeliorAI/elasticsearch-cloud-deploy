@@ -46,7 +46,7 @@ variable "clients_count" {
 
 variable "security_enabled" {
   description = "Whether or not to enable x-pack security on the cluster"
-  default     = false
+  default     = true
 }
 
 variable "singlenode_zone" {
@@ -117,7 +117,7 @@ variable "client_heap_size" {
 
 variable "xpack_monitoring_host" {
   description = "ES host to send monitoring data"
-  default     = "self"
+  default     = "http://localhost:9200/"
 }
 
 variable "filebeat_monitoring_host" {
@@ -125,7 +125,16 @@ variable "filebeat_monitoring_host" {
   default     = ""
 }
 
+variable "use_g1gc" {
+  description = "Whether or not to enable G1GC in jvm.options ES config"
+  default     = false
+}
+
 variable "DEV_MODE_scripts_gcs_bucket" {
   description = "GCS bucket to override init scripts from. Should not be used on production."
   default     = ""
+}
+
+variable "gcp_ssh_pub_key_file" {
+  default = "id_rsa.pub"
 }
